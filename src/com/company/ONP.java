@@ -2,12 +2,23 @@ package com.company;
 
 import java.util.Arrays;
 
+/**
+* Klasa <code>ONP</code> umożliwia przekształcanie postaci infiksowej wyrażenia na postfiksową
+* */
 public class ONP {
+    /**indeks pozycji na stosie*/
     static int index = 0;
+    /**stos wykorzystywany do przekształceń*/
     static String stos = "";
+    /**wynikowe wyrażenie w postaci postfiksowej*/
     static String[] postfix;
 
 
+    /**
+    * Sprawdza priorytet operacji
+    * @param operation operacja której priorytet należy sprawdzić
+     * @return  priorytet operacji
+    * */
     public static int priority(char operation) {
         return switch (operation) {
             case '=' -> 0;
@@ -21,10 +32,23 @@ public class ONP {
 
     }
 
+    /**
+    * Zwraca negację przekazanej zmiennej, operacja negowania
+     * @param a liczba do zanegowania
+     * @return negacja liczby
+    * */
     public static double operation(double a) {
         return -a;
     }
 
+
+    /**
+     * Metoda wykonuje obliczenia na podstawie przesłanych zmiennych
+     * @param a pierwsza liczba
+     * @param b druga liczba
+     * @param operation operator między liczbami
+     * @return wykonane obliczenia
+     * */
     public static double operation(double a, double b, char operation){
         switch (operation) {
             case '+': return a+b;
@@ -42,6 +66,11 @@ public class ONP {
         }
     }
 
+    /**
+     * Metoda sprawdza czy przesłany string zawiera liczbę
+     * @param liczba string do sprawdzenia
+     * @return prawda jeśli ciąg składa się tylko z liczb
+     * */
     public static boolean isNumeric(String liczba){
         try {
             Double.parseDouble(liczba);
@@ -52,6 +81,11 @@ public class ONP {
         }
     }
 
+    /**
+     * Metoda oblicza wyrażenie zapisane w ONP
+     * @param post wyrażenie w postaci postfiksowej
+     * @return wynik wyrażenia
+     * */
     public static double calculate(String[] post){
 
         double a, b;
@@ -90,6 +124,10 @@ public class ONP {
         return stos[0];
     }
 
+    /**
+     * Metoda pobiera ostatni znak ze stosu
+     * @return znak na szczycie stosu
+     * */
     public static char getValue() {
         if (stos.length() > 0)
             return stos.charAt(stos.length() - 1);
@@ -97,11 +135,18 @@ public class ONP {
             return '\0';
     }
 
+    /**
+     * Metoda usuwa znak ze szczytu stosu
+     * */
     public static void deleteTop() {
         if (stos.length() > 0)
             stos = stos.substring(0, stos.length() - 1);
     }
 
+    /**
+     * Metoda porównuje szczyt stosu z nowo pobranym operatorem
+     * @param nowyOperator priorytet tego operatora będzie porównywany z tymi znajdującymi sie na stosie
+     * */
     public static void checkStack(char nowyOperator) {
 
         // jeśli dostarczono ) przepisz ze stosu wszystko do momentu (
@@ -131,7 +176,11 @@ public class ONP {
         stos += nowyOperator;
     }
 
-    // przetlumacz wyrazenie infiksowe do postfiksowego
+    /**
+     * Metoda przekształca wyrażenie infiksowe do prefiksowego
+     * @param infix string zawierający wyrażenie infiksowe
+     * @return tablica stringów zawierająca elementy wyrażenia postfiksowego
+     * */
     public static String[] toONP(String infix) {
 
         // ustaw zmienne
@@ -145,6 +194,8 @@ public class ONP {
                 postfix[index] = "";
                 while (infix.charAt(j) >= 48 && infix.charAt(j) <= 57) {
                     postfix[index] += String.valueOf(infix.charAt(j));
+                    if(j + 1 >= infix.length())
+                        break;
                     j++;
                 }
                 index++;
